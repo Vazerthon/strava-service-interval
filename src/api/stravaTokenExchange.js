@@ -4,16 +4,21 @@ import settings from '../settings';
 export async function handler({ queryStringParameters }) {
   const { STRAVA_SECRET_KEY, STRAVA_CLIENT_ID } = process.env;
   const { code } = queryStringParameters;
-  const url = settings.makeStravaTokenExchangeUrl(STRAVA_SECRET_KEY, STRAVA_CLIENT_ID, code);
+  const { stravaTokenExchangeUrl } = settings;
 
   return axios
-    .get(url)
+    .post(stravaTokenExchangeUrl, {
+      grant_type: 'authorization_code',
+      client_id: STRAVA_CLIENT_ID,
+      client_secret: STRAVA_SECRET_KEY,
+      code,
+    })
     .then((result) => ({
       statusCode: 200,
       body: JSON.stringify(result),
     }))
     .catch((error) => ({
       statusCode: 200,
-      body: JSON.stringify(error)
+      body: JSON.stringify(error),
     }));
 }

@@ -8,10 +8,10 @@ export async function handler({ queryStringParameters }) {
 
   return axios
     .post(stravaTokenExchangeUrl, {
-      grant_type: 'authorization_code',
       client_id: STRAVA_CLIENT_ID,
       client_secret: STRAVA_SECRET_KEY,
       code,
+      grant_type: 'authorization_code',
     })
     .then((result) => ({
       statusCode: 200,

@@ -1,13 +1,14 @@
 const stravaClientId = process.env.REACT_APP_STRAVA_CLIENT_ID;
 const stravaRedirectUrl = process.env.REACT_APP_STRAVA_REDIRECT_URL;
 const stravaAuthUrl = `https://www.strava.com/oauth/authorize?client_id=${stravaClientId}&response_type=code&redirect_uri=${stravaRedirectUrl}&approval_prompt=force&scope=read`;
-const stravaTokenExchangeUrl = 'https://www.strava.com/oauth/token';
+const makeStravaTokenExchangeUrl = (stravaClientSecret, stravaClientId, accessCode) =>
+  `https://www.strava.com/oauth/token?grant_type=authorization_code&client_id=${stravaClientId}&client_secret=${stravaClientSecret}&code=${accessCode}`;
 const makePublicTokenExchangeUrl = (accessCode) => `.netlify/functions/stravaTokenExchange?code=${accessCode}`;
 
 const settings = {
   stravaClientId,
   stravaAuthUrl,
-  stravaTokenExchangeUrl,
+  makeStravaTokenExchangeUrl,
   makePublicTokenExchangeUrl,
 };
 

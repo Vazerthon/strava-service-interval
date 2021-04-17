@@ -16,7 +16,7 @@
     "react-scripts": "4.0.3"
   },
   "scripts": {
-    "build-funcs": "npx babel --no-babelrc --plugins @babel/plugin-transform-modules-commonjs --out-dir api src/api",
+    "build-funcs": "npx rollup src/api/* -d api --format cjs",
     "start": "react-scripts start",
     "build": "npm run build-funcs && react-scripts build",
     "test": "react-scripts test"
@@ -39,8 +39,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.14",
-    "@babel/core": "^7.13.14",
-    "@babel/plugin-transform-modules-commonjs": "^7.13.8"
+    "rollup": "^1.32.1"
   }
 }

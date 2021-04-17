@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { settings } from '../contexts/Settings';
+import settings from '../settings';
 
 export async function handler(event, context) {
   const { STRAVA_SECRET_KEY } = process.env;

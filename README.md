@@ -1,1 +1,8 @@
 # strava-service-interval
+
+## Environment Variables
+
+REACT_APP_STRAVA_CLIENT_ID
+REACT_APP_STRAVA_REDIRECT_URL
+STRAVA_SECRET_KEY
+STRAVA_CLIENT_ID

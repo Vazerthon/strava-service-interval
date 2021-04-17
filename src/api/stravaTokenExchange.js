@@ -2,9 +2,9 @@ import axios from 'axios';
 import settings from '../settings';
 
 export async function handler({ queryStringParameters }) {
-  const { STRAVA_SECRET_KEY } = process.env;
+  const { STRAVA_SECRET_KEY, STRAVA_CLIENT_ID } = process.env;
   const { code } = queryStringParameters;
-  const url = settings.makeStravaTokenExchangeUrl(STRAVA_SECRET_KEY, code);
+  const url = settings.makeStravaTokenExchangeUrl(STRAVA_SECRET_KEY, STRAVA_CLIENT_ID, code);
 
   return axios
     .get(url)

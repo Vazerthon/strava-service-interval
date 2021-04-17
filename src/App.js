@@ -1,10 +1,26 @@
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import Theme from './contexts/Theme';
-import Page from './containers/Page';
+import { SettingsProvider } from './contexts/Settings';
+
+import Home from './containers/Home';
+import Auth from './containers/Auth';
 
 function App() {
   return (
     <Theme>
-      <Page />
+      <SettingsProvider>
+        <BrowserRouter>
+          <Switch>
+          <Route path="/auth" exact>
+              <Auth />
+            </Route>
+            <Route path="*">
+              <Home />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </SettingsProvider>
     </Theme>
   );
 }

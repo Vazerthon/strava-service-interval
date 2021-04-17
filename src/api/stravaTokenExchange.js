@@ -10,7 +10,6 @@ export async function handler({ queryStringParameters }) {
     .get(url)
     .then((result) => ({
       statusCode: 200,
-      body: JSON.stringify(result),
     }))
     .catch((error) => ({
       statusCode: 500,

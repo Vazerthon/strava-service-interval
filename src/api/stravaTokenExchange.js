@@ -1,7 +1,7 @@
-const axios = require('axios');
-const { settings } = require('../contexts/Settings');
+import axios from 'axios';
+import { settings } from '../contexts/Settings';
 
-exports.handler = async function handler(event, context) {
+export async function handler(event, context) {
   const { STRAVA_SECRET_KEY } = process.env;
   const url = settings.makeStravaTokenExchangeUrl('x', 'y');
 

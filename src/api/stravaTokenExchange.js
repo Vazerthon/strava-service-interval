@@ -1,12 +1,18 @@
 import axios from 'axios';
 import settings from '../settings';
 
-export async function handler(event, context) {
+export async function handler({ queryStringParameters }) {
   const { STRAVA_SECRET_KEY } = process.env;
-  const url = settings.makeStravaTokenExchangeUrl('x', 'y');
+  const { code } = queryStringParameters;
+  const url = settings.makeStravaTokenExchangeUrl(STRAVA_SECRET_KEY, code);
 
-  return {
+  return axios
+    .get(url)
+    .then((result) => ({
       statusCode: 200,
-      body: JSON.stringify({ event, context, STRAVA_SECRET_KEY })
-  };
+      body: JSON.stringify(result),
+    }))
+    .catch((error) => ({
+      statusCode: 500,
+    }));
 }

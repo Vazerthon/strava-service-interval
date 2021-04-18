@@ -1,19 +1,19 @@
 import { useContext } from 'react';
 import qs from 'qs';
-import { makeTokenExchangeRequest } from '../api/stravaTokenExchange';
+import axios from 'axios';
 
 import { SettingsContext } from '../contexts/Settings';
 
 export default function Auth() {
-  const { stravaAuthUrl, stravaTokenExchangeUrl } = useContext(SettingsContext);
+  const { stravaAuthUrl, makePublicTokenExchangeUrl } = useContext(SettingsContext);
   const { code, error } = qs.parse(window.location.search, {
     ignoreQueryPrefix: true,
   });
 
-  const exchangeCode = () =>
-    makeTokenExchangeRequest('', '', stravaTokenExchangeUrl, code).then(
-      console.log,
-    );
+  const exchangeCode = () => {
+    const url = makePublicTokenExchangeUrl(code);
+    axios.get(url).then(console.log).catch(console.log);
+  }
 
   return (
     <>

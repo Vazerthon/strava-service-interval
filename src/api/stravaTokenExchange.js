@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 import settings from '../settings';
 
-export const makeTokenExchangeRequest = (
+export const makeTokenExchangeRequest = async (
   stravaClientSecret,
   stravaClientId,
   stravaTokenExchangeUrl,
@@ -23,13 +23,19 @@ export const makeTokenExchangeRequest = (
     url: stravaTokenExchangeUrl,
   };
 
-  const onSuccess = ({ data }) => ({
+  const onSuccess = (data) => ({
     statusCode: 200,
-    body: data,
+    body: JSON.stringify(data),
   });
   const onError = () => ({ statusCode: 400 });
 
-  return axios(options).then(onSuccess).catch(onError);
+  try {
+    const result = await axios(options);
+    return onSuccess(result.data);
+  } catch (error) {
+    console.log(error);
+    return onError();
+  }
 };
 
 export function handler({ queryStringParameters }) {

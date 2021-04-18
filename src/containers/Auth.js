@@ -12,7 +12,7 @@ export default function Auth() {
 
   const exchangeCode = () => {
     const url = makePublicTokenExchangeUrl(code);
-    axios.get(url).then(console.log).catch(console.log);
+    axios.get(url).then(({ data }) => console.log(data)).catch(console.log);
   }
 
   return (

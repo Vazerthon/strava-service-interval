@@ -24,10 +24,10 @@ export async function handler({ queryStringParameters }) {
   return axios(options)
     .then((result) => ({
       statusCode: 200,
-      body: JSON.stringify(result),
+      body: result,
     }))
     .catch((error) => ({
       statusCode: 400,
-      body: JSON.stringify(error)
+      body: 'error',
     }));
 }

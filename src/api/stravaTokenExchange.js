@@ -27,7 +27,7 @@ export async function handler({ queryStringParameters }) {
       body: JSON.stringify(result),
     }))
     .catch((error) => ({
-      statusCode: 200,
+      statusCode: 400,
       body: JSON.stringify(error)
     }));
 }

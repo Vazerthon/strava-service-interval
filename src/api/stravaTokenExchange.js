@@ -23,7 +23,7 @@ export const makeTokenExchangeRequest = async (
     url: stravaTokenExchangeUrl,
   };
 
-  const onSuccess = (data) => ({
+  const onSuccess = ({ data }) => ({
     statusCode: 200,
     body: JSON.stringify(data),
   });

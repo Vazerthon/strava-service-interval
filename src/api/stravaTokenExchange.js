@@ -1,8 +1,7 @@
 import axios from 'axios';
-import qs from 'qs';
 import settings from '../settings';
 
-export async function handler({ queryStringParameters }) {
+export function handler({ queryStringParameters }) {
   const { STRAVA_SECRET_KEY, STRAVA_CLIENT_ID } = process.env;
   const { code } = queryStringParameters;
   const { stravaTokenExchangeUrl } = settings;
@@ -16,17 +15,16 @@ export async function handler({ queryStringParameters }) {
 
   const options = {
     method: 'POST',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    data: qs.stringify(data),
     url: stravaTokenExchangeUrl,
+    data,
   };
 
   return axios(options)
     .then((result) => ({
       statusCode: 200,
-      body: result,
+      body: JSON.stringify(result),
     }))
-    .catch((error) => ({
+    .catch(() => ({
       statusCode: 400,
       body: 'error',
     }));

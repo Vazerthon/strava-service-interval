@@ -2,12 +2,14 @@ import axios from 'axios';
 import qs from 'qs';
 import settings from '../settings';
 
-export const makeTokenExchangeRequest = async (
-  stravaClientSecret,
-  stravaClientId,
-  stravaTokenExchangeUrl,
-  code,
-) => {
+export async function handler({ queryStringParameters }) {
+  const { STRAVA_SECRET_KEY, STRAVA_CLIENT_ID } = process.env;
+  const { code } = queryStringParameters;
+  const { stravaTokenExchangeUrl } = settings;
+
+  const stravaClientId = STRAVA_CLIENT_ID;
+  const stravaClientSecret = STRAVA_SECRET_KEY;
+
   const data = {
     code,
     client_id: stravaClientId,
@@ -52,16 +54,3 @@ export const makeTokenExchangeRequest = async (
     throw error;
   }
 };
-
-export function handler({ queryStringParameters }) {
-  const { STRAVA_SECRET_KEY, STRAVA_CLIENT_ID } = process.env;
-  const { code } = queryStringParameters;
-  const { stravaTokenExchangeUrl } = settings;
-
-  return makeTokenExchangeRequest(
-    STRAVA_SECRET_KEY,
-    STRAVA_CLIENT_ID,
-    stravaTokenExchangeUrl,
-    code,
-  );
-}

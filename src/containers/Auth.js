@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useCallback } from 'react';
 import qs from 'qs';
 import axios from 'axios';
 import { useHistory } from 'react-router';
@@ -19,29 +19,44 @@ export default function Auth() {
   const { loaded, loading } = state;
 
   const extractData = ({ data }) => data.body;
-  const navigateToHome = () => history.push(routes.home);
-  const navigateToWelcome = () => history.push(routes.welcome);
-  const handleError = () => {
+
+  const navigateToHome = useCallback(() => history.push(routes.home), [
+    history,
+    routes.home,
+  ]);
+  const handleError = useCallback(() => {
     setError();
-    navigateToWelcome();
-  };
-  const makeApiRequest = () =>
-    axios
-      .get(makePublicTokenExchangeUrl(code))
-      .then(extractData)
-      .then(setStravaData)
-      .then(navigateToHome)
-      .catch(handleError);
+    history.push(routes.welcome);
+  }, [history, routes.welcome, setError]);
+
+  useEffect(() => {
+    const makeApiRequest = () =>
+      axios
+        .get(makePublicTokenExchangeUrl(code))
+        .then(extractData)
+        .then(setStravaData)
+        .then(navigateToHome)
+        .catch(handleError);
+
+    if (code && !loading && !loaded) {
+      setLoading();
+
+      console.log(`Making API request for ${code}`);
+      makeApiRequest();
+    }
+  }, [
+    code,
+    handleError,
+    loaded,
+    loading,
+    makePublicTokenExchangeUrl,
+    navigateToHome,
+    setLoading,
+    setStravaData,
+  ]);
 
   if (loaded) {
     navigateToHome();
-  }
-
-  if (code && !loading) {
-    setLoading();
-
-    console.log(`Making API request for ${code}`);
-    makeApiRequest();
   }
 
   if (error) {

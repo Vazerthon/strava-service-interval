@@ -37,7 +37,7 @@ export const makeTokenExchangeRequest = async (
 
     return {
       statusCode: 200,
-      body: stravaData,
+      body: JSON.stringify(stravaData),
     }
   } catch (error) {
     return {

@@ -5,6 +5,7 @@ import { useState } from 'react';
 export const StravaContext = createContext();
 
 const defaultStravaData = {
+  oneTimeCode: undefined,
   accessToken: undefined,
   refreshToken: undefined,
   tokenExpiresAt: undefined,
@@ -23,7 +24,13 @@ const defaultState = {
 export const StravaProvider = ({ children }) => {
   const [state, setState] = useState(defaultState);
 
-  const setStravaData = (strava) => setState({ ...state, loading: false, strava });
+  const setStravaData = (strava) =>
+    setState({
+      ...state,
+      loading: false,
+      strava: { ...state.strava, ...strava },
+    });
+
   const setError = () =>
     setState({
       loaded: false,
@@ -31,13 +38,18 @@ export const StravaProvider = ({ children }) => {
       error: true,
       strava: defaultStravaData,
     });
+
   const setLoading = () => setState({ ...state, loading: true });
+
+  const setOneTimeCode = (code) =>
+    setState({ ...state, strava: { ...state.strava, oneTimeCode: code } });
 
   const value = {
     state,
     setStravaData,
     setError,
     setLoading,
+    setOneTimeCode,
   };
 
   return (

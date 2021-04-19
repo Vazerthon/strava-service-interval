@@ -27,7 +27,7 @@ export async function handler({ queryStringParameters }) {
 
   try {
     const { data } = await axios(options);
-    
+
     console.log('data', data);
 
     const stravaData = {
@@ -40,9 +40,9 @@ export async function handler({ queryStringParameters }) {
     };
 
     console.log('stravaData', stravaData);
-    
+
     const stravaDataString = JSON.stringify(stravaData);
-    
+
     console.log('stravaData string', stravaDataString);
 
     return {
@@ -50,7 +50,9 @@ export async function handler({ queryStringParameters }) {
       body: stravaDataString,
     };
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log(error.response.status);
+    console.log(error.response.data);
+    console.log(error.response.headers);
+    return error;
   }
-};
+}

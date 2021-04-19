@@ -1,17 +1,18 @@
 import { useContext } from 'react';
 import { useHistory } from 'react-router';
+import qs from 'qs';
 import { SettingsContext } from '../contexts/Settings';
 import { StravaContext } from '../contexts/Strava';
 
 export default function Welcome() {
   const history = useHistory();
+  const { error } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
   const { stravaAuthUrl, routes } = useContext(SettingsContext);
-  const { state } = useContext(StravaContext);
-  const { loaded, error } = state;
+  const { stravaData } = useContext(StravaContext);
 
   const navigateToHome = () => history.push(routes.home);
 
-  if (loaded) {
+  if (stravaData) {
     navigateToHome();
   }
 

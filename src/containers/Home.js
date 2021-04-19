@@ -6,17 +6,18 @@ import { StravaContext } from '../contexts/Strava';
 export default function Home() {
   const history = useHistory();
   const { routes } = useContext(SettingsContext);
-  const { state, strava } = useContext(StravaContext);
-  const { loaded } = state;
+  const { stravaData } = useContext(StravaContext);
 
-  if (!loaded) {
+  if (!stravaData) {
     history.push(routes.welcome);
     return <></>;
   }
 
+  const { athleteFirstName, athleteLastName } = stravaData;
+
   return (
     <>
-      Welcome {strava.athleteFirstName} {strava.athleteLastName}!
+      Welcome {athleteFirstName} {athleteLastName}!
     </>
   );
 }

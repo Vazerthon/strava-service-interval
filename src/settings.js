@@ -14,6 +14,7 @@ const settings = {
   routes: {
     home: '/',
     welcome: '/welcome',
+    welcomeError: '/welcome?error=true',
     auth: '/auth',
   },
 };

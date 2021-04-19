@@ -1,63 +1,58 @@
-import { useContext, useEffect, useCallback } from 'react';
+import { useState, useContext } from 'react';
 import qs from 'qs';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 
 import { SettingsContext } from '../contexts/Settings';
 import { StravaContext } from '../contexts/Strava';
+import { useEffect } from 'react/cjs/react.development';
 
 export default function Auth() {
   const history = useHistory();
   const { makePublicTokenExchangeUrl, routes } = useContext(SettingsContext);
-  const { state, setLoading, setStravaData, setError, setOneTimeCode } = useContext(
-    StravaContext,
-  );
+  const { setStravaData } = useContext(StravaContext);
   const { code, error } = qs.parse(window.location.search, {
     ignoreQueryPrefix: true,
   });
-
-  const { loaded, loading, oneTimeCode } = state;
-
-  const extractData = ({ data }) => data.body;
-
-  const navigateToHome = useCallback(() => history.push(routes.home), [
-    history,
-    routes.home,
-  ]);
-
-  const handleError = useCallback(() => {
-    setError();
-    history.push(routes.welcome);
-  }, [history, routes.welcome, setError]);
+  const [exchangeRequested, setExchangeRequested] = useState(false);
 
   useEffect(() => {
-    const makeApiRequest = () =>
+    const extractData = ({ data }) => data.body;
+    const navigateToHome = () => history.push(routes.home);
+    const handleError = () => history.push(routes.welcomeError);
+
+    const makeApiRequest = (url) => {
+      if (exchangeRequested) {
+        return;
+      }
+      setExchangeRequested(true);
+
       axios
-        .get(makePublicTokenExchangeUrl(oneTimeCode))
+        .get(url)
         .then(extractData)
         .then(setStravaData)
         .then(navigateToHome)
         .catch(handleError);
+    };
 
-    if (oneTimeCode && !loading && !loaded) {
-      setLoading();
-
-      console.log(`Making API request for ${oneTimeCode}`);
-      makeApiRequest();
+    if (code) {
+      const url = makePublicTokenExchangeUrl(code);
+      makeApiRequest(url);
     }
-  }, [handleError, loaded, loading, makePublicTokenExchangeUrl, navigateToHome, oneTimeCode, setLoading, setStravaData]);
 
-  if (code) {
-    setOneTimeCode(code);
-  }
-
-  if (loaded) {
-    navigateToHome();
-  }
-
-  if (error) {
-    handleError();
-  }
+    if (error) {
+      handleError();
+    }
+  }, [
+    code,
+    error,
+    exchangeRequested,
+    history,
+    makePublicTokenExchangeUrl,
+    routes.home,
+    routes.welcomeError,
+    setStravaData,
+  ]);
 
   return <>Connecting to Strava...</>;
 }

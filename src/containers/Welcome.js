@@ -12,8 +12,6 @@ export default function Welcome() {
 
   const navigateToHome = () => history.push(routes.home);
 
-  console.log('welcome', stravaData);
-
   if (stravaData) {
     navigateToHome();
   }

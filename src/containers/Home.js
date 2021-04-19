@@ -8,8 +8,6 @@ export default function Home() {
   const { routes } = useContext(SettingsContext);
   const { stravaData } = useContext(StravaContext);
 
-  console.log('home', stravaData);
-
   if (!stravaData) {
     history.push(routes.welcome);
     return <></>;

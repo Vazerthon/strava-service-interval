@@ -17,42 +17,35 @@ export async function handler({ queryStringParameters }) {
     grant_type: 'authorization_code',
   };
 
-  const options = {
-    method: 'POST',
-    responseType: 'json',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    data: qs.stringify(data),
-    url: stravaTokenExchangeUrl,
-  };
-
+  let body;
+  let status;
   try {
-    const { data } = await axios(options);
-
-    console.log('data', data);
+    const result = await axios({
+      method: 'POST',
+      responseType: 'json',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify(data),
+      url: stravaTokenExchangeUrl,
+    });
 
     const stravaData = {
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-      tokenExpiresAt: data.expires_at,
-      athleteId: data.athlete.id,
-      athleteFirstName: data.athlete.firstname,
-      athleteLastName: data.athlete.lastname,
+      accessToken: result.data.access_token,
+      refreshToken: result.data.refresh_token,
+      tokenExpiresAt: result.data.expires_at,
+      athleteId: result.data.athlete.id,
+      athleteFirstName: result.data.athlete.firstname,
+      athleteLastName: result.data.athlete.lastname,
     };
 
-    console.log('stravaData', stravaData);
-
-    const stravaDataString = JSON.stringify(stravaData);
-
-    console.log('stravaData string', stravaDataString);
-
-    return {
-      statusCode: 200,
-      body: stravaDataString,
-    };
+    body = JSON.stringify(stravaData);
+    status = 200;
   } catch (error) {
-    console.log(error.response.status);
-    console.log(error.response.data);
-    console.log(error.response.headers);
-    return error;
+    body = error.response.data;
+    status = error.response.status;
   }
+
+  return {
+    statusCode: status,
+    body,
+  };
 }

@@ -23,20 +23,18 @@ export const makeTokenExchangeRequest = async (
     url: stravaTokenExchangeUrl,
   };
 
-  const onSuccess = (data) => ({
+  const onSuccess = ({ data }) => ({
     statusCode: 200,
-    body: JSON.stringify(data),
+    body: data,
   });
 
   const onError = () => ({ statusCode: 400 });
 
   try {
     const result = await axios(options);
-    console.log('result', result);
-    return onSuccess(result.data);
+    return onSuccess(result);
   } catch (error) {
-    console.log('error', error);
-    return onError();
+    return onError(error);
   }
 };
 

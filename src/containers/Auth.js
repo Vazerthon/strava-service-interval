@@ -51,5 +51,5 @@ export default function Auth() {
     handleError();
   }
 
-  return <>This should never be seen</>;
+  return <>Connecting to Strava...</>;
 }

@@ -30,8 +30,9 @@ export default function Auth() {
         .get(url)
         .then(extractData)
         .then(setStravaData)
-        .then(navigateToHome)
         .catch(handleError);
+      
+      navigateToHome();
     };
 
     if (code) {

@@ -1,8 +1,21 @@
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { useHistory } from 'react-router';
+import { SettingsContext } from '../contexts/Settings';
+import { StravaContext } from '../contexts/Strava';
 
 export default function Home() {
-  return <>
-    Home
-    <Link to="/auth">Auth page</Link>
-  </>;
+  const { routes } = useContext(SettingsContext);
+  const { loaded, strava } = useContext(StravaContext);
+  const history = useHistory();
+  
+  if (!loaded) {
+    history.push(routes.welcome);
+    return <></>;
+  }
+
+  return (
+    <>
+      Welcome {strava.athleteFirstName} {strava.athleteLastName}!
+    </>
+  );
 }

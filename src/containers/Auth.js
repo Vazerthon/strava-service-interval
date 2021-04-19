@@ -1,36 +1,55 @@
 import { useContext } from 'react';
 import qs from 'qs';
 import axios from 'axios';
+import { useHistory } from 'react-router';
 
 import { SettingsContext } from '../contexts/Settings';
-import { useState } from 'react';
+import { StravaContext } from '../contexts/Strava';
 
 export default function Auth() {
-  const { stravaAuthUrl, makePublicTokenExchangeUrl, stravaAthleteUrl } = useContext(SettingsContext);
+  const history = useHistory();
+  const { makePublicTokenExchangeUrl, routes } = useContext(SettingsContext);
+  const { loaded, setStravaData, setError } = useContext(StravaContext);
   const { code, error } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  const [stravaData, setStravaData] = useState(undefined);
+
+  const convertToStravaData = ({
+    athlete,
+    access_token,
+    refresh_token,
+    expires_at,
+  }) => ({
+    accessToken: access_token,
+    refreshToken: refresh_token,
+    tokenExpiresAt: expires_at,
+    athleteId: athlete.id,
+    athleteFirstName: athlete.first_name,
+    athleteLastName: athlete.last_name,
+  });
+  const extractData = ({ data }) => data;
+  const navigateToHome = () => history.push(routes.home);
+  const navigateToWelcome = () => history.push(routes.welcome);
+  const handleError = () => {
+    setError();
+    navigateToWelcome();
+  };
+
+  if (loaded) {
+    navigateToHome();
+  }
 
   if (code) {
     axios
       .get(makePublicTokenExchangeUrl(code))
-      .then(({ data }) => setStravaData(data))
-      .catch(console.log);
+      .then(extractData)
+      .then(convertToStravaData)
+      .then(setStravaData)
+      .then(navigateToHome)
+      .catch(handleError);
   }
 
-  if (stravaData) {
-    axios
-      .get(stravaAthleteUrl, {
-        headers: { Authorization: `Bearer: ${stravaData.access_token}` }
-      })
-      .then(({ data }) => console.log(data))
-      .catch(console.log);
+  if (error) {
+    handleError();
   }
 
-  return (
-    <>
-      {error && <div>There's an error</div>}
-
-      <a href={stravaAuthUrl}>Connect with Strava</a>
-    </>
-  );
+  return <>This should never be seen</>;
 }

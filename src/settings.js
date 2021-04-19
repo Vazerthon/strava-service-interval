@@ -11,6 +11,11 @@ const settings = {
   stravaTokenExchangeUrl,
   makePublicTokenExchangeUrl,
   stravaAthleteUrl,
+  routes: {
+    home: '/',
+    welcome: '/welcome',
+    auth: '/auth',
+  },
 };
 
 export default settings;

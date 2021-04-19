@@ -1,14 +1,14 @@
 import Theme from './contexts/Theme';
 import { SettingsProvider } from './contexts/Settings';
 import { StravaProvider } from './contexts/Strava';
-import Router from './Router';
+import Routes from './Routes';
 
 function App() {
   return (
     <Theme>
       <SettingsProvider>
         <StravaProvider>
-          <Router />
+          <Routes />
         </StravaProvider>
       </SettingsProvider>
     </Theme>

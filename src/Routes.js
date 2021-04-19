@@ -1,13 +1,13 @@
+import { useContext } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Home from './containers/Home';
 import Auth from './containers/Auth';
 import Welcome from './containers/Welcome';
 import NotFound from './containers/NotFound';
-import { useContext } from 'react/cjs/react.development';
 import { SettingsContext } from './contexts/Settings';
 
-function Router() {
+function Routes() {
   const { routes } = useContext(SettingsContext);
 
   return (
@@ -30,4 +30,4 @@ function Router() {
   );
 }
 
-export default Router;
+export default Routes;

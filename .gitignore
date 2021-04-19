@@ -1,6 +1,7 @@
 
-# Built lambda funcs
+# Build output
 api/
+build/
 
 # Logs
 logs

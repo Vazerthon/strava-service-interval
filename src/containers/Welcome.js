@@ -13,7 +13,6 @@ export default function Welcome() {
   if (loaded) {
     navigateToHome();
   }
-  // if error, show message
 
   return (
     <>

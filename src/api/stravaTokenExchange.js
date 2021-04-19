@@ -45,7 +45,7 @@ export async function handler({ queryStringParameters }) {
   }
 
   return {
-    statusCode: status,
-    body,
+    statusCode: 200,
+    body: 'hi there',
   };
 }

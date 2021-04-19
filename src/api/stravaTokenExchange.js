@@ -33,21 +33,24 @@ export const makeTokenExchangeRequest = async (
       refreshToken: data.refresh_token,
       tokenExpiresAt: data.expires_at,
       athleteId: data.athlete.id,
-      athleteFirstName: data.athlete.first_name,
-      athleteLastName: data.athlete.last_name,
+      athleteFirstName: data.athlete.firstname,
+      athleteLastName: data.athlete.lastname,
     };
 
     console.log('stravaData', stravaData);
-    console.log('stravaData string', JSON.stringify(stravaData));
+    
+    const stravaDataString = JSON.stringify(stravaData);
+    
+    console.log('stravaData string', stravaDataString);
 
     return {
       statusCode: 200,
-      body: JSON.stringify(stravaData),
-    }
+      body: stravaDataString,
+    };
   } catch (error) {
     return {
       statusCode: 400,
-    }
+    };
   }
 };
 

@@ -23,21 +23,26 @@ export const makeTokenExchangeRequest = async (
     url: stravaTokenExchangeUrl,
   };
 
-  const onSuccess = ({ data }) => ({
-    statusCode: 200,
-    body: JSON.stringify(data),
-  });
-
-  const onError = () => ({ statusCode: 400 });
-
   try {
-    const result = await axios(options);
+    const { data } = await axios(options);
+    
+    const stravaData = {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      tokenExpiresAt: data.expires_at,
+      athleteId: data.athlete.id,
+      athleteFirstName: data.athlete.first_name,
+      athleteLastName: data.athlete.last_name,
+    };
 
-    console.log('data', JSON.stringify(result.data));
-
-    return onSuccess(result);
+    return {
+      statusCode: 200,
+      body: stravaData,
+    }
   } catch (error) {
-    return onError();
+    return {
+      statusCode: 400,
+    }
   }
 };
 

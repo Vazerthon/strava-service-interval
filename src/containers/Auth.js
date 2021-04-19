@@ -12,20 +12,7 @@ export default function Auth() {
   const { loaded, setStravaData, setError } = useContext(StravaContext);
   const { code, error } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
-  const convertToStravaData = ({
-    athlete,
-    access_token,
-    refresh_token,
-    expires_at,
-  }) => ({
-    accessToken: access_token,
-    refreshToken: refresh_token,
-    tokenExpiresAt: expires_at,
-    athleteId: athlete.id,
-    athleteFirstName: athlete.first_name,
-    athleteLastName: athlete.last_name,
-  });
-  const extractData = ({ data }) => data;
+  const extractData = ({ data }) => data.body;
   const navigateToHome = () => history.push(routes.home);
   const navigateToWelcome = () => history.push(routes.welcome);
   const handleError = () => {
@@ -41,7 +28,6 @@ export default function Auth() {
     axios
       .get(makePublicTokenExchangeUrl(code))
       .then(extractData)
-      .then(convertToStravaData)
       .then(setStravaData)
       .then(navigateToHome)
       .catch(handleError);

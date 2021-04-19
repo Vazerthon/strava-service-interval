@@ -16,7 +16,7 @@ export default function Auth() {
   const [exchangeRequested, setExchangeRequested] = useState(false);
 
   useEffect(() => {
-    const extractData = ({ data }) => data.body;
+    const extractData = ({ data }) => data;
     const navigateToHome = () => history.push(routes.home);
     const handleError = () => history.push(routes.welcomeError);
 
@@ -30,9 +30,8 @@ export default function Auth() {
         .get(url)
         .then(extractData)
         .then(setStravaData)
+        .then(navigateToHome)
         .catch(handleError);
-      
-      setTimeout(navigateToHome, 0);
     };
 
     if (code) {

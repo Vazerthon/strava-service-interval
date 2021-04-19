@@ -25,16 +25,19 @@ export const makeTokenExchangeRequest = async (
 
   const onSuccess = ({ data }) => ({
     statusCode: 200,
-    body: data,
+    body: JSON.stringify(data),
   });
 
   const onError = () => ({ statusCode: 400 });
 
   try {
     const result = await axios(options);
+
+    console.log('data', JSON.stringify(result.data));
+
     return onSuccess(result);
   } catch (error) {
-    return onError(error);
+    return onError();
   }
 };
 

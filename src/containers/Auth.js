@@ -1,11 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import qs from 'qs';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 
 import { SettingsContext } from '../contexts/Settings';
 import { StravaContext } from '../contexts/Strava';
-import { useEffect } from 'react/cjs/react.development';
 
 export default function Auth() {
   const history = useHistory();

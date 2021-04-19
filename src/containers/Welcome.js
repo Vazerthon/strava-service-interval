@@ -4,9 +4,10 @@ import { SettingsContext } from '../contexts/Settings';
 import { StravaContext } from '../contexts/Strava';
 
 export default function Welcome() {
-  const { stravaAuthUrl, routes } = useContext(SettingsContext);
-  const { loaded, error } = useContext(StravaContext);
   const history = useHistory();
+  const { stravaAuthUrl, routes } = useContext(SettingsContext);
+  const { state } = useContext(StravaContext);
+  const { loaded, error } = state;
 
   const navigateToHome = () => history.push(routes.home);
 

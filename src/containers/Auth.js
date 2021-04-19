@@ -9,8 +9,14 @@ import { StravaContext } from '../contexts/Strava';
 export default function Auth() {
   const history = useHistory();
   const { makePublicTokenExchangeUrl, routes } = useContext(SettingsContext);
-  const { loaded, setStravaData, setError } = useContext(StravaContext);
-  const { code, error } = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+  const { state, setLoading, setStravaData, setError } = useContext(
+    StravaContext,
+  );
+  const { code, error } = qs.parse(window.location.search, {
+    ignoreQueryPrefix: true,
+  });
+
+  const { loaded, loading } = state;
 
   const extractData = ({ data }) => data.body;
   const navigateToHome = () => history.push(routes.home);
@@ -19,18 +25,23 @@ export default function Auth() {
     setError();
     navigateToWelcome();
   };
-
-  if (loaded) {
-    navigateToHome();
-  }
-
-  if (code) {
+  const makeApiRequest = () =>
     axios
       .get(makePublicTokenExchangeUrl(code))
       .then(extractData)
       .then(setStravaData)
       .then(navigateToHome)
       .catch(handleError);
+
+  if (loaded) {
+    navigateToHome();
+  }
+
+  if (code && !loading) {
+    setLoading();
+
+    console.log(`Making API request for ${code}`);
+    makeApiRequest();
   }
 
   if (error) {

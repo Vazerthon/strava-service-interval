@@ -15,6 +15,7 @@ const defaultStravaData = {
 
 const defaultState = {
   loaded: false,
+  loading: false,
   error: false,
   strava: defaultStravaData,
 };
@@ -22,18 +23,21 @@ const defaultState = {
 export const StravaProvider = ({ children }) => {
   const [state, setState] = useState(defaultState);
 
-  const setStravaData = (strava) => setState({ ...state, strava });
+  const setStravaData = (strava) => setState({ ...state, loading: false, strava });
   const setError = () =>
     setState({
       loaded: false,
+      loading: false,
       error: true,
       strava: defaultStravaData,
     });
+  const setLoading = () => setState({ ...state, loading: true });
 
   const value = {
     state,
     setStravaData,
     setError,
+    setLoading,
   };
 
   return (

@@ -48,6 +48,9 @@ export const makeTokenExchangeRequest = async (
       body: stravaDataString,
     };
   } catch (error) {
+    console.log(error);
+    console.log(JSON.stringify(error));
+
     return {
       statusCode: 400,
     };

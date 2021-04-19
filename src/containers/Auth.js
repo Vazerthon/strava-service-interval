@@ -32,7 +32,7 @@ export default function Auth() {
         .then(setStravaData)
         .catch(handleError);
       
-      navigateToHome();
+      setTimeout(navigateToHome, 0);
     };
 
     if (code) {

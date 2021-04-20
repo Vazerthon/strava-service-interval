@@ -26,6 +26,8 @@ export const makeTokenExchangeRequest = async (
   try {
     const { data } = await axios(options);
     
+    console.log(data);
+    
     const stravaData = {
       accessToken: data.access_token,
       refreshToken: data.refresh_token,

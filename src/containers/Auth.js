@@ -1,56 +1,40 @@
 import { useState, useContext, useEffect } from 'react';
 import qs from 'qs';
-import axios from 'axios';
 import { useHistory } from 'react-router';
 
+import useStrava from '../hooks/useStrava';
 import { SettingsContext } from '../contexts/Settings';
-import { StravaContext } from '../contexts/Strava';
 
 export default function Auth() {
+  const [exchangeRequested, setExchangeRequested] = useState(false);
   const history = useHistory();
-  const { makePublicTokenExchangeUrl, routes } = useContext(SettingsContext);
-  const { setStravaData } = useContext(StravaContext);
+  const { makeTokenExchangeRequest } = useStrava();
+  const { routes } = useContext(SettingsContext);
   const { code, error } = qs.parse(window.location.search, {
     ignoreQueryPrefix: true,
   });
-  const [exchangeRequested, setExchangeRequested] = useState(false);
 
   useEffect(() => {
-    const extractData = ({ data }) => data;
-    const navigateToHome = () => history.push(routes.home);
-    const handleError = () => history.push(routes.welcomeError);
-
-    const makeApiRequest = (url) => {
-      if (exchangeRequested) {
-        return;
-      }
-      setExchangeRequested(true);
-
-      axios
-        .get(url)
-        .then(extractData)
-        .then(setStravaData)
-        .then(navigateToHome)
-        .catch(handleError);
-    };
+    if (exchangeRequested) {
+      return;
+    }
+    setExchangeRequested(true);
 
     if (code) {
-      const url = makePublicTokenExchangeUrl(code);
-      makeApiRequest(url);
+      makeTokenExchangeRequest(code);
     }
 
     if (error) {
-      handleError();
+      history.push(routes.welcomeError);
     }
   }, [
     code,
     error,
     exchangeRequested,
     history,
-    makePublicTokenExchangeUrl,
+    makeTokenExchangeRequest,
     routes.home,
     routes.welcomeError,
-    setStravaData,
   ]);
 
   return <>Connecting to Strava...</>;

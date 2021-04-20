@@ -1,25 +1,22 @@
-import axios from 'axios';
 import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { SettingsContext } from '../contexts/Settings';
 import { StravaContext } from '../contexts/Strava';
+import useStrava from '../hooks/useStrava';
 
 export default function Home() {
   const history = useHistory();
-  const { routes, stravaAthleteUrl } = useContext(SettingsContext);
+  const { routes } = useContext(SettingsContext);
   const { stravaData } = useContext(StravaContext);
+  const { loadAthleteBikes } = useStrava();
 
   useEffect(() => {
     if (!stravaData) {
       return;
     }
 
-    axios
-      .get(stravaAthleteUrl, {
-        headers: { Authorization: `Bearer ${stravaData.accessToken}` },
-      })
-      .then(({ data }) => console.log(data));
-  }, [stravaAthleteUrl, stravaData]);
+    loadAthleteBikes();
+  }, [loadAthleteBikes, stravaData]);
 
   if (!stravaData) {
     history.push(routes.welcome);

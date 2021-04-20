@@ -11,7 +11,7 @@ export default function Home() {
   const { loadAthleteBikes } = useStrava();
 
   useEffect(() => {
-    if (!stravaData) {
+    if (!stravaData || stravaData.athleteBikes) {
       return;
     }
 
@@ -23,11 +23,14 @@ export default function Home() {
     return <></>;
   }
 
-  const { athleteFirstName, athleteLastName } = stravaData;
+  const { athleteFirstName, athleteLastName, athleteBikes } = stravaData;
 
   return (
     <>
       Welcome {athleteFirstName} {athleteLastName}!
+      <div>
+        Your bikes: {JSON.stringify(athleteBikes)}
+      </div>
     </>
   );
 }

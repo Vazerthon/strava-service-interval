@@ -9,17 +9,17 @@ export default function Home() {
   const { routes, stravaAthleteUrl } = useContext(SettingsContext);
   const { stravaData } = useContext(StravaContext);
 
-  useEffect(() => {
-    if (!stravaData) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!stravaData) {
+  //     return;
+  //   }
 
-    axios
-      .get(stravaAthleteUrl, {
-        headers: { Authorization: `Bearer ${stravaData.accessToken}` },
-      })
-      .then(({ data }) => console.log(data));
-  }, [stravaAthleteUrl, stravaData]);
+  //   axios
+  //     .get(stravaAthleteUrl, {
+  //       headers: { Authorization: `Bearer ${stravaData.accessToken}` },
+  //     })
+  //     .then(({ data }) => console.log(data));
+  // }, [stravaAthleteUrl, stravaData]);
 
   if (!stravaData) {
     history.push(routes.welcome);

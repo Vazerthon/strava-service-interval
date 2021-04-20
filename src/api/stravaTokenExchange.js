@@ -33,6 +33,7 @@ export const makeTokenExchangeRequest = async (
       athleteId: data.athlete.id,
       athleteFirstName: data.athlete.firstname,
       athleteLastName: data.athlete.lastname,
+      bikes: data.athlete.bikes,
     };
 
     const stravaDataString = JSON.stringify(stravaData);

@@ -26,8 +26,6 @@ export const makeTokenExchangeRequest = async (
   try {
     const { data } = await axios(options);
     
-    console.log(data);
-    
     const stravaData = {
       accessToken: data.access_token,
       refreshToken: data.refresh_token,
@@ -35,7 +33,6 @@ export const makeTokenExchangeRequest = async (
       athleteId: data.athlete.id,
       athleteFirstName: data.athlete.firstname,
       athleteLastName: data.athlete.lastname,
-      bikes: data.athlete.bikes,
     };
 
     const stravaDataString = JSON.stringify(stravaData);
